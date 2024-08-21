@@ -48,7 +48,7 @@ void SetupBoostLog()
     ConsoleSink->set_formatter(LogFormatter);
     #endif
 
-    auto const LogFileSink = boost::log::add_file_log("renderer-application.log");
+    auto const LogFileSink = boost::log::add_file_log("application.log");
     LogFileSink->set_formatter(LogFormatter);
 
     boost::log::add_common_attributes();

@@ -46,5 +46,5 @@ class VkImGUITemplateRecipe(ConanFile):
         cmake_layout(self)
 
     def generate(self):
-        tc = CMakeToolchain(self)
+        tc = CMakeToolchain(self, generator="Ninja")
         tc.generate()

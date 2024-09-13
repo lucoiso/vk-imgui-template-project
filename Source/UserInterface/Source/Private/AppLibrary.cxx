@@ -21,9 +21,8 @@ module;
 module UserInterface.Library;
 
 import UserInterface.Window;
-
-import RenderCore.UserInterface.Window;
-import RenderCore.UserInterface.Window.Flags;
+import luGUI.UserInterface.Window.Flags;
+import RenderCore.Renderer;
 import RenderCore.Utils.EnumHelpers;
 
 using namespace UserInterface;
@@ -34,21 +33,21 @@ void SetupBoostLog()
     auto const FormatThreadId  = boost::log::expressions::attr<boost::log::attributes::current_thread_id::value_type>("ThreadID");
     auto const FormatSeverity  = boost::log::expressions::attr<boost::log::trivial::severity_level>("Severity");
 
-    boost::log::formatter const LogFormatter
-        = boost::log::expressions::format("[%1%] (%2%) [%3%] %4%") % FormatTimeStamp % FormatThreadId % FormatSeverity % boost::log::expressions::smessage;
+    boost::log::formatter const LogFormatter = boost::log::expressions::format("[%1%] (%2%) [%3%] %4%") % FormatTimeStamp % FormatThreadId %
+                                               FormatSeverity % boost::log::expressions::smessage;
 
     #ifndef _DEBUG
     boost::log::core::get()->set_filter(boost::log::trivial::severity != boost::log::trivial::debug);
+    #endif
 
     #ifdef _WIN32
     ::ShowWindow(::GetConsoleWindow(), SW_HIDE);
     #endif
-    #else
+
     auto const ConsoleSink = boost::log::add_console_log(std::clog);
     ConsoleSink->set_formatter(LogFormatter);
-    #endif
 
-    auto const LogFileSink = boost::log::add_file_log("application.log");
+    auto const LogFileSink = boost::log::add_file_log("vk-imgui-template-project.log");
     LogFileSink->set_formatter(LogFormatter);
 
     boost::log::add_common_attributes();
@@ -58,15 +57,14 @@ std::int32_t UserInterface::Execute()
 {
     SetupBoostLog();
 
-    std::int32_t Output { EXIT_FAILURE };
+    std::int32_t Output{EXIT_FAILURE};
 
     RenderCore::Renderer::SetFPSLimit(60.F);
     RenderCore::Renderer::SetVSync(true);
 
-    constexpr RenderCore::InitializationFlags Flags = RenderCore::InitializationFlags::ENABLE_IMGUI     |
-                                                      RenderCore::InitializationFlags::ENABLE_DOCKING   |
-                                                      RenderCore::InitializationFlags::WITHOUT_TITLEBAR |
-                                                      RenderCore::InitializationFlags::ALWAYS_ON_TOP;
+    constexpr luGUI::InitializationFlags Flags = luGUI::InitializationFlags::ENABLE_DOCKING   |
+                                                 luGUI::InitializationFlags::WITHOUT_TITLEBAR |
+                                                 luGUI::InitializationFlags::ALWAYS_ON_TOP;
 
     constexpr auto WindowTitle = "lucoiso/vk-imgui-template-project";
 

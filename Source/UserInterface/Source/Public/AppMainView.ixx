@@ -4,14 +4,16 @@
 
 module;
 
+#include "UserInterfaceModule.hpp"
+
 export module UserInterface.AppMainView;
 
 import UserInterface.Window;
-import RenderCore.UserInterface.Control;
+import luGUI.UserInterface.Control;
 
 namespace UserInterface
 {
-    export class AppMainView final : public RenderCore::Control
+    export class USERINTERFACEMODULE_API AppMainView : public luGUI::Control
     {
     public:
         explicit AppMainView(Control *);

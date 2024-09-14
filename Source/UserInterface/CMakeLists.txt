@@ -8,6 +8,7 @@ SET(LIBRARY_NAME UserInterface)
 # ------------- Library Setup --------------
 SET(PRIVATE_MODULES_BASE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Source/Private)
 SET(PUBLIC_MODULES_BASE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Source/Public)
+SET(RESOURCE_BASE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
 
 SET(PRIVATE_MODULES
         "${PRIVATE_MODULES_BASE_DIRECTORY}/AppLibrary.cxx"
@@ -73,7 +74,12 @@ FETCHCONTENT_DECLARE(
 )
 FETCHCONTENT_MAKEAVAILABLE(gltf_samples)
 
-ADD_CUSTOM_TARGET(COPY_MODELS
+ADD_CUSTOM_TARGET(APPLICATION_COPY_MODELS
         COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${gltf_samples_SOURCE_DIR}/Models" "${CMAKE_INSTALL_BINDIR}/Models"
-        COMMENT "Copying application 3D models"
+        COMMENT "[CMake Command] [Application]: Copying 3D models"
+)
+
+ADD_CUSTOM_TARGET(APPLICATION_COPY_RESOURCES
+        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${RESOURCE_BASE_DIRECTORY}" "${CMAKE_INSTALL_BINDIR}/Resources"
+        COMMENT "[CMake Command] [Application]: Copying resources"
 )

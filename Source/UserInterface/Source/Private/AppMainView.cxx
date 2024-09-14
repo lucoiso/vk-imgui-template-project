@@ -6,11 +6,20 @@ module;
 
 module UserInterface.AppMainView;
 
+import luGUI.UserInterface.Singletons.ImageManager;
+import luGUI.UserInterface.Singletons.FontManager;
+
 using namespace UserInterface;
 
 AppMainView::AppMainView(Control *const Parent)
     : Control(Parent)
 {
+}
+
+void AppMainView::OnInitialize()
+{
+    PrepareIcons();
+    PrepareFonts();
 }
 
 void AppMainView::Paint()
@@ -24,25 +33,52 @@ void AppMainView::Paint()
 
     if (!IsOpen)
     {
-        if (auto* const ParentWindow = static_cast<AppWindow*>(GetParent()))
+        if (auto* const ParentWindow = dynamic_cast<AppWindow*>(GetParent()))
         {
             ParentWindow->RequestClose();
         }
     }
 }
 
-void AppMainView::CreateBody()
+void AppMainView::PrepareIcons()
 {
-    constexpr auto PlaceholderText = "Placeholder";
+    strzilla::string const Key = "Placeholder";
+    strzilla::string const Path = "Resources/Icons/Placeholder.png";
 
+    if (luGUI::ImageManager::Get().RegisterTexture(Key, Path))
+    {
+        m_PlaceholderIcon.SetKey(Key);
+    }
+}
+
+void AppMainView::PrepareFonts()
+{
+    strzilla::string const Key = "Placeholder";
+    strzilla::string const Path = "Resources/Fonts/BebasNeue-Regular.ttf";
+
+    if (luGUI::FontManager::Get().RegisterFont(Key, Path))
+    {
+        luGUI::FontManager::Get().BuildFonts();
+        m_PlaceholderText.SetKey(Key);
+        m_PlaceholderText.SetText(Key);
+    }
+}
+
+void AppMainView::CreateBody() const
+{
     float const WindowWidth = ImGui::GetWindowSize().x;
-    float const TextWidth   = ImGui::CalcTextSize(PlaceholderText).x;
-
     float const WindowHeight = ImGui::GetWindowSize().y;
-    float const TextHeight   = ImGui::CalcTextSize(PlaceholderText).y;
 
-    ImGui::SetCursorPosX((WindowWidth - TextWidth) * 0.5f);
-    ImGui::SetCursorPosY((WindowHeight - TextHeight) * 0.5f);
+    luGUI::ImageDefinitions const& Definitions = m_PlaceholderIcon.GetDefinitions();
+    strzilla::string_view const Text = m_PlaceholderText.GetText();
 
-    ImGui::Text(PlaceholderText);
+    float const ContentWidth = ImGui::CalcTextSize(std::data(Text)).x + Definitions.Size.x;
+    float const ContentHeight = ImGui::CalcTextSize(std::data(Text)).y + Definitions.Size.y;
+
+    ImGui::SetCursorPosX((WindowWidth - ContentWidth) * 0.5f);
+    ImGui::SetCursorPosY((WindowHeight - ContentHeight) * 0.5f);
+
+    m_PlaceholderIcon.Draw();
+    ImGui::SameLine();
+    m_PlaceholderText.Draw();
 }

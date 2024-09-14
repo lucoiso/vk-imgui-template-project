@@ -21,7 +21,7 @@ module;
 module UserInterface.Library;
 
 import UserInterface.Window;
-import luGUI.UserInterface.Window.Flags;
+import luGUI.UserInterface.Controls.Window.Flags;
 import RenderCore.Renderer;
 import RenderCore.Utils.EnumHelpers;
 
@@ -62,9 +62,8 @@ std::int32_t UserInterface::Execute()
     RenderCore::Renderer::SetFPSLimit(60.F);
     RenderCore::Renderer::SetVSync(true);
 
-    constexpr luGUI::InitializationFlags Flags = luGUI::InitializationFlags::ENABLE_DOCKING   |
-                                                 luGUI::InitializationFlags::WITHOUT_TITLEBAR |
-                                                 luGUI::InitializationFlags::ALWAYS_ON_TOP;
+    constexpr luGUI::InitializationFlags Flags = luGUI::InitializationFlags::ENABLE_DOCKING  |
+                                                 luGUI::InitializationFlags::WITHOUT_TITLEBAR;
 
     constexpr auto WindowTitle = "lucoiso/vk-imgui-template-project";
 

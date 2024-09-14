@@ -65,21 +65,7 @@ INSTALL(TARGETS ${LIBRARY_NAME}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-INCLUDE(FetchContent)
-
-FETCHCONTENT_DECLARE(
-        gltf_samples
-        GIT_REPOSITORY https://github.com/KhronosGroup/glTF-Sample-Assets
-        GIT_TAG main
-)
-FETCHCONTENT_MAKEAVAILABLE(gltf_samples)
-
-ADD_CUSTOM_TARGET(APPLICATION_COPY_MODELS
-        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${gltf_samples_SOURCE_DIR}/Models" "${CMAKE_INSTALL_BINDIR}/Models"
-        COMMENT "[CMake Command] [Application]: Copying 3D models"
-)
-
 ADD_CUSTOM_TARGET(APPLICATION_COPY_RESOURCES
         COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${RESOURCE_BASE_DIRECTORY}" "${CMAKE_INSTALL_BINDIR}/Resources"
-        COMMENT "[CMake Command] [Application]: Copying resources"
+        COMMENT "[CMake Command] [Application]: Copying application resources"
 )

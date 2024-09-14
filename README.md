@@ -2,7 +2,7 @@
 
 ![{59F2A56E-D1D1-4AE7-92FC-6CE67517194C}](https://github.com/user-attachments/assets/9a976b6d-5384-4178-a31c-71f4952bc7b8)
 
-Small template project using my UI library ImGUI that is using Vulkan and ImGUI at its core.
+Small template project using my UI library luGUI that is using Vulkan and ImGUI at its core.
 
 # Dependencies
 

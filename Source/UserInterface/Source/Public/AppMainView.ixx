@@ -17,9 +17,6 @@ namespace UserInterface
 {
     export class USERINTERFACEMODULE_API AppMainView : public luGUI::Control
     {
-        luGUI::Image m_PlaceholderIcon {};
-        luGUI::Text  m_PlaceholderText {};
-
     public:
         explicit AppMainView(Control *);
 
@@ -28,9 +25,8 @@ namespace UserInterface
         void Paint() override;
 
     private:
-        void PrepareIcons();
-        void PrepareFonts();
-
-        void CreateBody() const;
+        static void PrepareIcons();
+        static void PrepareFonts();
+        static void CreateBody();
     };
 } // namespace UserInterface

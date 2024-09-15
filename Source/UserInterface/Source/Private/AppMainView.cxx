@@ -4,6 +4,9 @@
 
 module;
 
+#include <imgui.h>
+#include <imgui_internal.h>
+
 module UserInterface.AppMainView;
 
 import luGUI.UserInterface.Singletons.ImageManager;
@@ -30,8 +33,13 @@ void AppMainView::OnInitialize()
 
 void AppMainView::Paint()
 {
+    ImGuiWindowClass MainWindowClass;
+    MainWindowClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoTabBar;
+
+    ImGui::SetNextWindowClass(&MainWindowClass);
+
     static bool IsOpen = true;
-    if (ImGui::Begin("AppMainView", &IsOpen, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration))
+    if (ImGui::Begin("##Main", &IsOpen, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration))
     {
         CreateBody();
     }
@@ -73,10 +81,10 @@ void AppMainView::PrepareFonts()
 void AppMainView::CreateBody()
 {
     static auto MainGrid = luGUI::Grid::Create()
-                                        ->Add<luGUI::Image>(0, 0, g_PlaceholderResourceKey)
-                                        ->Add<luGUI::Text>(0, 1, g_PlaceholderResourceKey, "Placeholder: 1")
-                                        ->Add<luGUI::Image>(1, 0, g_PlaceholderResourceKey)
-                                        ->Add<luGUI::Text>(1, 1, g_PlaceholderResourceKey, "Placeholder: 2");
+                           ->Add<luGUI::Image>(0, 0, g_PlaceholderResourceKey)
+                           ->Add<luGUI::Text>(0, 1, g_PlaceholderResourceKey, "Placeholder: 1")
+                           ->Add<luGUI::Image>(1, 0, g_PlaceholderResourceKey)
+                           ->Add<luGUI::Text>(1, 1, g_PlaceholderResourceKey, "Placeholder: 2");
 
     MainGrid->Draw();
 
@@ -84,11 +92,11 @@ void AppMainView::CreateBody()
     constexpr luGUI::NumberInputSettings<float> FloatSettings { .Slider = true };
 
     static auto MainStack = luGUI::Stack::Create(luGUI::Orientation::Vertical)
-                                           ->Add<luGUI::TextInput>("Placeholder: 3", TextSettings)
-                                           ->Add<luGUI::FloatInput>("Placeholder: 4", FloatSettings)
-                                           ->Add<luGUI::TextInput>("Placeholder: 5")
-                                           ->Add<luGUI::IntInput>("Placeholder: 6")
-                                           ->Add<luGUI::Button>("Placeholder: 7");
+                            ->Add<luGUI::TextInput>("Placeholder: 3", TextSettings)
+                            ->Add<luGUI::FloatInput>("Placeholder: 4", FloatSettings)
+                            ->Add<luGUI::TextInput>("Placeholder: 5")
+                            ->Add<luGUI::IntInput>("Placeholder: 6")
+                            ->Add<luGUI::Button>("Placeholder: 7");
 
     MainStack->Draw();
 }

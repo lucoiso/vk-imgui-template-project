@@ -4,6 +4,7 @@
 
 module;
 
+#include <imgui.h>
 #include <imgui_internal.h>
 
 module UserInterface.Window;
@@ -40,6 +41,7 @@ void AppWindow::PrePaint()
 void AppWindow::OnInitialize()
 {
     SetStyle();
+    SetIcon("Resources/Icons/Placeholder.png");
 }
 
 void AppWindow::SetDockingLayout()
@@ -47,7 +49,7 @@ void AppWindow::SetDockingLayout()
     ImGuiID const TempNodeID = g_DockSpaceID;
 
     ImGuiDockNode const *const CentralNode = ImGui::DockBuilderGetCentralNode(TempNodeID);
-    ImGui::DockBuilderDockWindow("AppMainView", CentralNode->ID);
+    ImGui::DockBuilderDockWindow("##Main", CentralNode->ID);
 
     ImGui::DockBuilderFinish(g_DockSpaceID);
 }

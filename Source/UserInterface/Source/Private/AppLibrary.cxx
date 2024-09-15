@@ -10,6 +10,7 @@ module;
 #include <boost/log/expressions/formatters/date_time.hpp>
 #include <boost/log/keywords/format.hpp>
 #include <boost/log/support/date_time.hpp>
+#include <boost/log/trivial.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/utility/setup/console.hpp>
 #include <boost/log/utility/setup/file.hpp>
@@ -62,7 +63,7 @@ std::int32_t UserInterface::Execute()
     RenderCore::Renderer::SetFPSLimit(60.F);
     RenderCore::Renderer::SetVSync(true);
 
-    constexpr luGUI::InitializationFlags Flags = luGUI::InitializationFlags::ENABLE_DOCKING | luGUI::InitializationFlags::WITHOUT_TITLEBAR;
+    constexpr luGUI::InitializationFlags Flags = luGUI::InitializationFlags::ENABLE_DOCKING;
     constexpr auto WindowTitle = "lucoiso/vk-imgui-template-project";
     constexpr std::uint16_t WindowWidth = 720U;
     constexpr auto WindowHeight = static_cast<std::uint16_t>(WindowWidth / 2.F);

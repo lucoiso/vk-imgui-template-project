@@ -46,22 +46,21 @@ BOOL CALLBACK EnumWindowsProc(HWND Handle, LPARAM const UserData)
     return TRUE;
 }
 
-static void SetAsChilfOf(AppWindow* const Window)
+static void SetAsChilfOf(AppWindow const* const Window)
 {
-    static std::vector ComboOptions { "None" };
+    static std::vector<const char*> ComboOptions {};
     static std::unordered_map<strzilla::string, ::HWND> ExistingWindowHandles { };
 
     static auto UpdateList = [&]
     {
         ComboOptions.clear();
         ComboOptions.reserve(64);
-        ComboOptions.emplace_back("None");
 
         std::pair EnumData(&ComboOptions, &ExistingWindowHandles);
         EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(&EnumData));
     };
 
-    if (std::size(ComboOptions) == 1)
+    if (std::empty(ComboOptions))
     {
         UpdateList();
     }
@@ -69,16 +68,24 @@ static void SetAsChilfOf(AppWindow* const Window)
     ImGui::Text("Set Parent");
     ImGui::SameLine();
 
+    ImGui::PushItemWidth(250.F);
     static std::int32_t CurrentSelection = 0;
     if (ImGui::Combo("##SetAsChildOfComboBox", &CurrentSelection, std::data(ComboOptions), static_cast<std::int32_t>(std::size(ComboOptions))))
     {
         Window->SetAsChildOf(ExistingWindowHandles.at(ComboOptions.at(CurrentSelection)));
     }
+    ImGui::PopItemWidth();
 
     ImGui::SameLine();
     if (ImGui::Button("Refresh##SetAsChildOfRefreshButton"))
     {
         UpdateList();
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button("Reset##SetAsChildOfResetButton"))
+    {
+        Window->SetAsChildOf(nullptr);
     }
 }
 #endif
@@ -95,8 +102,7 @@ void AppMainView::Paint()
         CreateBody();
 
         #ifdef _WIN32
-        if (auto *const ParentWindow = dynamic_cast<AppWindow *>(GetParent());
-            ParentWindow != nullptr && RenderCore::HasFlag(ParentWindow->GetInitializationFlags(), luGUI::InitializationFlags::WITHOUT_TITLEBAR))
+        if (auto const *const ParentWindow = dynamic_cast<AppWindow *>(GetParent()))
         {
             SetAsChilfOf(ParentWindow);
         }

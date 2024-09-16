@@ -1,5 +1,5 @@
 # ------------ Project Settings ------------
-CMAKE_MINIMUM_REQUIRED(VERSION 3.29)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.28)
 PROJECT(vk-imgui-template-project VERSION 0.0.1 LANGUAGES CXX)
 
 # ----------- Global Definitions -----------

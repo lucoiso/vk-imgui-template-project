@@ -11,6 +11,9 @@ module UserInterface.Window;
 
 import UserInterface.AppMainView;
 
+import luGUI.UserInterface.Singletons.ImageManager;
+import luGUI.UserInterface.Singletons.FontManager;
+
 using namespace UserInterface;
 
 ImGuiID g_DockSpaceID { 0U };
@@ -40,8 +43,35 @@ void AppWindow::PrePaint()
 
 void AppWindow::OnInitialize()
 {
+    PrepareIcons();
+    PrepareFonts();
+
     SetStyle();
     SetIcon("Resources/Icons/Placeholder.png");
+}
+
+constexpr auto g_PlaceholderResourceKey = "Placeholder";
+
+void AppWindow::PrepareIcons()
+{
+    if (constexpr auto Path = "Resources/Icons/Placeholder.png";
+        !luGUI::ImageManager::Get().RegisterTexture(g_PlaceholderResourceKey, Path))
+    {
+        throw std::runtime_error("failed to prepare application icons");
+    }
+}
+
+void AppWindow::PrepareFonts()
+{
+    if (constexpr auto Path = "Resources/Fonts/BebasNeue-Regular.ttf";
+        luGUI::FontManager::Get().RegisterFont(g_PlaceholderResourceKey, Path))
+    {
+        luGUI::FontManager::Get().BuildFonts();
+    }
+    else
+    {
+        throw std::runtime_error("failed to prepare application fonts");
+    }
 }
 
 void AppWindow::SetDockingLayout()

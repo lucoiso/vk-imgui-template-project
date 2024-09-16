@@ -14,12 +14,14 @@ SET(PRIVATE_MODULES
         "${PRIVATE_MODULES_BASE_DIRECTORY}/AppLibrary.cxx"
         "${PRIVATE_MODULES_BASE_DIRECTORY}/AppWindow.cxx"
         "${PRIVATE_MODULES_BASE_DIRECTORY}/AppMainView.cxx"
+        "${PRIVATE_MODULES_BASE_DIRECTORY}/AppWin32ParentingHelper.cxx"
 )
 
 SET(PUBLIC_MODULES
         "${PUBLIC_MODULES_BASE_DIRECTORY}/AppLibrary.ixx"
         "${PUBLIC_MODULES_BASE_DIRECTORY}/AppWindow.ixx"
         "${PUBLIC_MODULES_BASE_DIRECTORY}/AppMainView.ixx"
+        "${PUBLIC_MODULES_BASE_DIRECTORY}/AppWin32ParentingHelper.ixx"
 )
 
 SET(PUBLIC_HEADERS

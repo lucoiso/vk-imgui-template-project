@@ -22,6 +22,8 @@ namespace UserInterface
         void OnInitialize() override;
 
     private:
+        static void PrepareIcons();
+        static void PrepareFonts();
         static void SetDockingLayout();
         static void SetStyle();
     };

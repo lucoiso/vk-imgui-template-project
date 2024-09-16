@@ -9,11 +9,12 @@ module;
 
 export module UserInterface.Win32ParentingHelper;
 
+import luGUI.UserInterface.Items.Item;
 import luGUI.UserInterface.Panels.Stack;
 
 import UserInterface.Window;
 
 namespace UserInterface
 {
-    export USERINTERFACEMODULE_API std::shared_ptr<luGUI::Stack> CreateWin32ParentingStack(AppWindow const* Window, float Width);
+    export USERINTERFACEMODULE_API std::shared_ptr<luGUI::Stack> CreateWin32ParentingStack(AppWindow const*, float, luGUI::Alignment);
 } // namespace UserInterface

@@ -20,7 +20,7 @@ using namespace UserInterface;
 
 BOOL CALLBACK EnumWindowsProc(HWND Handle, LPARAM const UserData)
 {
-    if (char WindowTitle[256];
+    if (char WindowTitle[64];
         IsWindowVisible(Handle) && GetWindowTextA(Handle, WindowTitle, sizeof(WindowTitle)) && strlen(WindowTitle) > 0)
     {
         if (auto * const WindowMap = reinterpret_cast<std::unordered_map<strzilla::string, ::HWND>*>(UserData))
@@ -51,19 +51,23 @@ static void UpdateAvailableHandles()
         for (strzilla::string const &OptionIt : s_WindowHandlesMap | std::views::keys)
         {
             s_WindowHandlesOptions.emplace_back(OptionIt);
+
+            if (std::empty(s_CurrentOwningHandle))
+            {
+                s_CurrentOwningHandle = OptionIt;
+            }
         }
     }
 }
 
-std::shared_ptr<luGUI::Stack> UserInterface::CreateWin32ParentingStack(AppWindow const* const Window, float const Width)
+std::shared_ptr<luGUI::Stack> UserInterface::CreateWin32ParentingStack(AppWindow const* const Window, float const Width, luGUI::Alignment const Alignment)
 {
     if (std::empty(s_WindowHandlesMap))
     {
         UpdateAvailableHandles();
     }
 
-    return luGUI::Stack::Create(luGUI::Orientation::Horizontal, Width)
-           ->Add<luGUI::Text>    ("Parent Process")
+    return luGUI::Stack::Create(luGUI::Orientation::Horizontal, Width, Alignment)
            ->Add<luGUI::ComboBox>("##ParentProcess",
                                   &s_WindowHandlesOptions,
                                   [] (strzilla::string const& Value)

@@ -63,7 +63,7 @@ std::int32_t UserInterface::Execute()
     RenderCore::Renderer::SetFPSLimit(60.F);
     RenderCore::Renderer::SetVSync(true);
 
-    constexpr luGUI::InitializationFlags Flags = luGUI::InitializationFlags::ENABLE_DOCKING;
+    constexpr luGUI::InitializationFlags Flags = luGUI::InitializationFlags::ENABLE_DOCKING | luGUI::InitializationFlags::WITHOUT_TITLEBAR;
     constexpr auto WindowTitle = "lucoiso/vk-imgui-template-project";
     constexpr std::uint16_t WindowWidth = 720U;
     constexpr auto WindowHeight = static_cast<std::uint16_t>(WindowWidth / 2.F);

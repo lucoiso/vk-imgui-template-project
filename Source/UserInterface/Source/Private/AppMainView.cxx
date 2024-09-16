@@ -17,6 +17,8 @@ import luGUI.UserInterface.Items.Input;
 import luGUI.UserInterface.Items.Button;
 import luGUI.UserInterface.Panels.Stack;
 import luGUI.UserInterface.Panels.Grid;
+import luGUI.UserInterface.Controls.Window.Flags;
+import RenderCore.Utils.EnumHelpers;
 
 using namespace UserInterface;
 
@@ -31,6 +33,56 @@ void AppMainView::OnInitialize()
     PrepareFonts();
 }
 
+#ifdef _WIN32
+BOOL CALLBACK EnumWindowsProc(HWND Handle, LPARAM const UserData)
+{
+    if (char WindowTitle[256];
+        IsWindowVisible(Handle) && GetWindowTextA(Handle, WindowTitle, sizeof(WindowTitle)) && strlen(WindowTitle) > 0)
+    {
+        auto const * const PairData = reinterpret_cast<std::pair<std::vector<const char*>*, std::unordered_map<strzilla::string, HWND>*>*>(UserData);
+        PairData->first->emplace_back(PairData->second->emplace(WindowTitle, Handle).first->first.c_str());
+    }
+
+    return TRUE;
+}
+
+static void SetAsChilfOf(AppWindow* const Window)
+{
+    static std::vector ComboOptions { "None" };
+    static std::unordered_map<strzilla::string, ::HWND> ExistingWindowHandles { };
+
+    static auto UpdateList = [&]
+    {
+        ComboOptions.clear();
+        ComboOptions.reserve(64);
+        ComboOptions.emplace_back("None");
+
+        std::pair EnumData(&ComboOptions, &ExistingWindowHandles);
+        EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(&EnumData));
+    };
+
+    if (std::size(ComboOptions) == 1)
+    {
+        UpdateList();
+    }
+
+    ImGui::Text("Set Parent");
+    ImGui::SameLine();
+
+    static std::int32_t CurrentSelection = 0;
+    if (ImGui::Combo("##SetAsChildOfComboBox", &CurrentSelection, std::data(ComboOptions), static_cast<std::int32_t>(std::size(ComboOptions))))
+    {
+        Window->SetAsChildOf(ExistingWindowHandles.at(ComboOptions.at(CurrentSelection)));
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button("Refresh##SetAsChildOfRefreshButton"))
+    {
+        UpdateList();
+    }
+}
+#endif
+
 void AppMainView::Paint()
 {
     ImGuiWindowClass MainWindowClass;
@@ -38,20 +90,20 @@ void AppMainView::Paint()
 
     ImGui::SetNextWindowClass(&MainWindowClass);
 
-    static bool IsOpen = true;
-    if (ImGui::Begin("##Main", &IsOpen, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration))
+    if (ImGui::Begin("##Main", nullptr, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration))
     {
         CreateBody();
-    }
-    ImGui::End();
 
-    if (!IsOpen)
-    {
-        if (auto *const ParentWindow = dynamic_cast<AppWindow *>(GetParent()))
+        #ifdef _WIN32
+        if (auto *const ParentWindow = dynamic_cast<AppWindow *>(GetParent());
+            ParentWindow != nullptr && RenderCore::HasFlag(ParentWindow->GetInitializationFlags(), luGUI::InitializationFlags::WITHOUT_TITLEBAR))
         {
-            ParentWindow->RequestClose();
+            SetAsChilfOf(ParentWindow);
         }
+        #endif
     }
+
+    ImGui::End();
 }
 
 constexpr auto g_PlaceholderResourceKey = "Placeholder";

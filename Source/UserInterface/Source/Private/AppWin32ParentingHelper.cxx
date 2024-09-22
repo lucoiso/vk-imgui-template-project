@@ -12,6 +12,7 @@ module;
 module UserInterface.Win32ParentingHelper;
 
 #ifdef _WIN32
+import luGUI.UserInterface.Panels.Panel;
 import luGUI.UserInterface.Items.ComboBox;
 import luGUI.UserInterface.Items.Button;
 import luGUI.UserInterface.Items.Text;
@@ -67,7 +68,7 @@ std::shared_ptr<luGUI::Stack> UserInterface::CreateWin32ParentingStack(AppWindow
         UpdateAvailableHandles();
     }
 
-    return luGUI::Stack::Create  (luGUI::Orientation::Horizontal, Width, Alignment)
+    return luGUI::Stack::Create  (luGUI::Orientation::Horizontal, Alignment, Width)
            ->Add<luGUI::Text>    ("Parent Process:")
            ->Add<luGUI::ComboBox>("##ParentProcess",
                                   &s_WindowHandlesOptions,

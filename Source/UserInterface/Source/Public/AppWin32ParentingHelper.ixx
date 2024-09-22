@@ -9,8 +9,8 @@ module;
 
 export module UserInterface.Win32ParentingHelper;
 
-import luGUI.UserInterface.Items.Item;
 import luGUI.UserInterface.Panels.Stack;
+import luGUI.UserInterface.Panels.Panel;
 
 import UserInterface.Window;
 

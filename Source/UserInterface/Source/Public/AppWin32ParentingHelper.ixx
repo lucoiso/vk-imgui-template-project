@@ -16,5 +16,5 @@ import UserInterface.Window;
 
 namespace UserInterface
 {
-    export USERINTERFACEMODULE_API std::shared_ptr<luGUI::Stack> CreateWin32ParentingStack(AppWindow const*, float, luGUI::Alignment);
+    export USERINTERFACEMODULE_API std::shared_ptr<luGUI::Stack> CreateWin32ParentingStack(AppWindow const*, float Width = 0.F, luGUI::Alignment Alignment = luGUI::Alignment::None);
 } // namespace UserInterface

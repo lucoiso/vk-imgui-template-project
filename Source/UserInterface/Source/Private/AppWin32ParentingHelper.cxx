@@ -67,7 +67,8 @@ std::shared_ptr<luGUI::Stack> UserInterface::CreateWin32ParentingStack(AppWindow
         UpdateAvailableHandles();
     }
 
-    return luGUI::Stack::Create(luGUI::Orientation::Horizontal, Width, Alignment)
+    return luGUI::Stack::Create  (luGUI::Orientation::Horizontal, Width, Alignment)
+           ->Add<luGUI::Text>    ("Parent Process:")
            ->Add<luGUI::ComboBox>("##ParentProcess",
                                   &s_WindowHandlesOptions,
                                   [] (strzilla::string const& Value)
